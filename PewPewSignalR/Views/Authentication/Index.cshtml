@@ -1,0 +1,15 @@
+﻿
+@{
+    ViewData["Title"] = "Index";
+}
+@model PewPewSignalR.Models.User
+
+<h1>Index</h1>
+
+<form method="post" asp-controller="Authentication" asp-action="Index">
+    <label asp-for="Username"></label>
+    <input asp-for="Username" />
+    <span asp-validation-for="Username"></span>
+    <br />
+    <input type="submit" value="Submit" />
+</form>
