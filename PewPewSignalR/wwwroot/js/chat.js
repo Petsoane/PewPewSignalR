@@ -20,6 +20,10 @@ $(document).ready(function () {
     });
 
     connection.start();
+    //console.log(connection.Hub,id);
+    connection.on("connected", (connId) => {
+        console.log("Connection Id = " + connId);
+    });
 
     /*connection.start().then(() => {
         $(document).getElementById("sendButton").disabled = false;

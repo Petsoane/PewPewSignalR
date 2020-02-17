@@ -18,6 +18,7 @@ namespace PewPewSignalR.Hubs
 		private readonly IConfiguration _configaration;
 		private string _connectionString;
 		private DbContextOptionsBuilder<ApplicationDbContext> _options;
+		private string _connectionId;
 
 		public ChatHub(IConfiguration configuration, ChatManager chatManager)
 		{
@@ -30,6 +31,14 @@ namespace PewPewSignalR.Hubs
 			_options.UseSqlServer(_connectionString);
 
 			_chatManager = chatManager;
+		}
+
+		public override Task OnConnectedAsync()
+		{
+			base.OnConnectedAsync();
+			_connectionId = Context.ConnectionId;
+			Clients.All.SendAsync("connected", Context.ConnectionId);
+			return Task.CompletedTask;
 		}
 
 		public async Task SendMessage(string user, string message)
@@ -56,6 +65,13 @@ namespace PewPewSignalR.Hubs
 			_chatManager.Messages.Add(dynamicMessage);
 
 			await Clients.All.SendAsync("ReceiveMessage", user, message);
+		}
+
+		public async Task PrivateMessage(string user, string message)
+		{
+			//FIND CONNECTION ID BY USER TABLE MAPPING = connectionId
+			var connectionId = "Bob"; // This needs to come from the user mapping table by matching the connectionId or vice versa
+			await Clients.Client(connectionId).SendAsync("pvtMessage", message, user);
 		}
 	}
 }
