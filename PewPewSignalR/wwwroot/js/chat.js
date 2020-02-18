@@ -20,6 +20,10 @@ $(document).ready(function () {
     });
 
     connection.start();
+    //console.log(connection.Hub,id);
+    connection.on("connected", (connId) => {
+        console.log("Connection Id = " + connId);
+    });
 
     /*connection.start().then(() => {
         $(document).getElementById("sendButton").disabled = false;
@@ -30,7 +34,7 @@ $(document).ready(function () {
     var $messagecontent = $('#messageInput');
     $messagecontent.keyup(function (e) {
         //var user = document.getElementById("userInput").value;
-        var user = $('Username').val();
+        var user = $('#Username').val();
         if (e.keyCode == 13) {
             var message = $messagecontent.val().trim();
             if (message.length == 0)
