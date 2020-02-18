@@ -40,12 +40,13 @@ namespace PewPewSignalR.Hubs
 			_userMessageContext.LogUser(username, Context.ConnectionId);
 		}
 
-
+		
 		public void ChangeReciever(string username, string newReciever)
 		{
 			Console.WriteLine("Changing the user reciver to " + newReciever);
 			_userMessageContext.ChangeMessagesTo(username, newReciever);
 		}
+		// This should be renamed to something else.
 		public async Task TestSend(string username, string message)
 		{
 			_userMessageContext.AddMessages(username, message);

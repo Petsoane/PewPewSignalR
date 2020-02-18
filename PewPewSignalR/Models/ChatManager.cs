@@ -15,6 +15,8 @@ namespace PewPewSignalR.Models
 
 	public class UserMessageContext
 	{
+		// A Store for all the users online.
+		// It holds the users information.
 		public  Dictionary<string, dynamic> UsersOnline = new Dictionary<string, dynamic>();
 		private  void InitUser(string username, string connectionId)
 		{
