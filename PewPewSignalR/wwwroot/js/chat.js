@@ -21,9 +21,9 @@ $(document).ready(function () {
         //console.log(message);
         //var msg = message;
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + ": " + msg + "<br/>" + timestamp;
+        var encodedMsg = "<strong>" + user + ": </strong>" + msg + "<br/>" + "<small>" + timestamp + "</small>";
 
-        $('#messagesList').append('<li class="list-group-item">' + encodedMsg + '</li>');
+        $('#messagesList').append('<li class="alert alert-secondary" role="alert">' + encodedMsg + '</li>');
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
     });
 
