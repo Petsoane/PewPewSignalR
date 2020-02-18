@@ -36,6 +36,7 @@ namespace PewPewSignalR.Hubs
 
 		public void AddUser(string username)
 		{
+			//throws execption when you refresh the page
 			_chatManager.MappedUserId.Add(username, Context.ConnectionId);
 			_userMessageContext.LogUser(username, Context.ConnectionId);
 		}
