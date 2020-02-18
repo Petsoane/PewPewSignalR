@@ -18,7 +18,7 @@ namespace PewPewSignalR.Models
 	// This Class Will be used to check if the given username is tied to any username currentlty
 	public class UnusedUsername : ValidationAttribute
 	{
-		private List<string> LoggedUsers = new List<string>();
+		private  static List<string> LoggedUsers = new List<string>();
 
 		protected override ValidationResult IsValid(object value, ValidationContext validationContext)
 		{

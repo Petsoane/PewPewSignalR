@@ -28,6 +28,7 @@ namespace PewPewSignalR
 		{
 			services.AddControllersWithViews();
 			services.AddSingleton<ChatManager>();
+			services.AddSingleton<UserMessageContext>();
 			//services.AddSignalR();
 			services.AddSignalR();
 			services.AddDbContext<ApplicationDbContext>(options => options.UseSqlServer(Configuration.GetConnectionString("Connect")));
