@@ -6,9 +6,17 @@
 $(document).ready(function () {
 "use strict";
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
+    var user = $('#Username').val();
 
     //$(document).getElementById("sendButton").disabled = true;
 
+    connection.on("PrivateReciever", (user, message) => {
+        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+        var encodedMsg = user + ": " + msg;
+
+        $('#messagesList').append('<li class="list-group-item text-primary">' + encodedMsg + '</li>');
+        $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
+    });
     connection.on("ReceiveMessage", (user, message) => {
         //console.log(message);
         //var msg = message;
@@ -19,10 +27,8 @@ $(document).ready(function () {
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
     });
 
-    connection.start();
-    //console.log(connection.Hub,id);
-    connection.on("connected", (connId) => {
-        console.log("Connection Id = " + connId);
+    connection.start().then(() => {
+            connection.invoke("AddUser", user)
     });
 
     /*connection.start().then(() => {
@@ -34,13 +40,26 @@ $(document).ready(function () {
     var $messagecontent = $('#messageInput');
     $messagecontent.keyup(function (e) {
         //var user = document.getElementById("userInput").value;
-        var user = $('#Username').val();
         if (e.keyCode == 13) {
+
             var message = $messagecontent.val().trim();
             if (message.length == 0)
                 return false;
 
-            connection.invoke("SendMessage", user, message).catch((err) => {
+            connection.invoke("TestSend", user, message).catch((err) => {
+                return console.error(err.toString());
+            });
+            $messagecontent.val('');
+        }
+    });
+    $messagecontent.keydown(function (e) {
+        if (e.keyCode == 191) {
+            var message = $messagecontent.val().trim()
+
+            if (message.length ==  0)
+                return false;
+
+            connection.invoke("ChangeReciever", user, message).catch((err) => {
                 return console.error(err.toString());
             });
             $messagecontent.val('');

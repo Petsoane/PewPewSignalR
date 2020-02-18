@@ -28,6 +28,7 @@ namespace PewPewSignalR.Controllers
                 HttpContext.Session.SetString("Username", user.Username);
                 return RedirectToAction("Index", "Home");
             }
+            ViewBag.Username = user.Username;
             return View(user);
         }
     }
