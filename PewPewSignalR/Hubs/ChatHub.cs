@@ -65,9 +65,11 @@ namespace PewPewSignalR.Hubs
 		public async Task SendMessage(string user, string message)
 		{
 			//user = HttpContext.Session.GetString("Username");
+			string timestamp = DateTime.Now.ToString("HH:mm:ss (dd.MM.yyyy)");
 			dynamic dynamicMessage = new ExpandoObject();
 			dynamicMessage.UserId = user;
 			dynamicMessage.Message = message;
+			dynamicMessage.timestamp = timestamp;
 
 			// Create a new db context.
 			ApplicationDbContext db = new ApplicationDbContext(_options.Options);
@@ -85,7 +87,7 @@ namespace PewPewSignalR.Hubs
 
 //			_chatManager.Messages.Add(dynamicMessage);
 
-			await Clients.All.SendAsync("ReceiveMessage", user, message);
+			await Clients.All.SendAsync("ReceiveMessage", user, message, timestamp);
 		}
 
 	

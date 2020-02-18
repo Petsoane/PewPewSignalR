@@ -17,11 +17,11 @@ $(document).ready(function () {
         $('#messagesList').append('<li class="list-group-item text-primary">' + encodedMsg + '</li>');
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
     });
-    connection.on("ReceiveMessage", (user, message) => {
+    connection.on("ReceiveMessage", (user, message, timestamp) => {
         //console.log(message);
         //var msg = message;
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + ": " + msg;
+        var encodedMsg = user + ": " + msg + "<br/>" + timestamp;
 
         $('#messagesList').append('<li class="list-group-item">' + encodedMsg + '</li>');
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
