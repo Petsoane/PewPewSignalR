@@ -8,7 +8,6 @@ namespace PewPewSignalR.Models
 {
 	public class ChatManager
 	{
-
 		public List<dynamic> Messages { get; set; } = new List<dynamic>();
 		public Dictionary<string, string> MappedUserId { get; set; } = new Dictionary<string, string>();
 	}
@@ -40,18 +39,21 @@ namespace PewPewSignalR.Models
 				UsersOnline[username].Messages.Add(dm);
 			}
 		}
+
 		public dynamic GetUserContext(string username)
 		{
 			if (UsersOnline.ContainsKey(username))
 				return UsersOnline[username];
 			return null;
 		}
+
 		public List<dynamic> GetMessages(string username)
 		{
 			if (UsersOnline.ContainsKey(username))
 				return  (List<dynamic>) UsersOnline[username].Messages;
 			return new List<dynamic>();
 		}
+		
 		public void ChangeMessagesTo(string username,string newReciever)
 		{
 			if ((UsersOnline.ContainsKey(newReciever) || newReciever == "group") && UsersOnline.ContainsKey(username))
@@ -60,6 +62,7 @@ namespace PewPewSignalR.Models
 				UsersOnline[username].Messages = new List<dynamic>();
 			}
 		}
+
 		public string GetReciverId(string username)
 		{
 			if (UsersOnline.ContainsKey(username) && UsersOnline[username].MessagesTo != "group")

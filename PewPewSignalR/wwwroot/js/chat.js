@@ -1,15 +1,19 @@
 ﻿// Please see documentation at https://docs.microsoft.com/aspnet/core/client-side/bundling-and-minification
 // for details on configuring this project to bundle and minify static web assets.
-
-// Write your JavaScript code.
+var RecieveGroupMessages = true;
 
 $(document).ready(function () {
 "use strict";
     var connection = new signalR.HubConnectionBuilder().withUrl("/chatHub").build();
     var user = $('#Username').val();
 
-    //$(document).getElementById("sendButton").disabled = true;
+    // Start connection
+    connection.start().then(() => {
+            connection.invoke("AddUser", user)
+    });
 
+
+    // Recieve a private message
     connection.on("PrivateReciever", (user, message) => {
         var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
         var encodedMsg = user + ": " + msg;
@@ -17,25 +21,18 @@ $(document).ready(function () {
         $('#messagesList').append('<li class="list-group-item text-primary">' + encodedMsg + '</li>');
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
     });
+
+
+    // Recive a group message.
     connection.on("ReceiveMessage", (user, message) => {
-        //console.log(message);
-        //var msg = message;
-        var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
-        var encodedMsg = user + ": " + msg;
+        if (RecieveGroupMessages) {
+            var msg = message.replace(/&/g, "&amp;").replace(/</g, "&lt;").replace(/>/g, "&gt;");
+            var encodedMsg = user + ": " + msg;
 
-        $('#messagesList').append('<li class="list-group-item">' + encodedMsg + '</li>');
-        $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
+            $('#messagesList').append('<li class="list-group-item">' + encodedMsg + '</li>');
+            $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
+        }
     });
-
-    connection.start().then(() => {
-            connection.invoke("AddUser", user)
-    });
-
-    /*connection.start().then(() => {
-        $(document).getElementById("sendButton").disabled = false;
-    }).catch(function (err) {
-        return console.error(err.toString());
-    });*/
 
     var $messagecontent = $('#messageInput');
     $messagecontent.keyup(function (e) {
@@ -46,12 +43,14 @@ $(document).ready(function () {
             if (message.length == 0)
                 return false;
 
-            connection.invoke("TestSend", user, message).catch((err) => {
+            connection.invoke("Send", user, message).catch((err) => {
                 return console.error(err.toString());
             });
             $messagecontent.val('');
         }
     });
+
+    // Change the reciever the message sending.
     $messagecontent.keydown(function (e) {
         if (e.keyCode == 191) {
             var message = $messagecontent.val().trim()
@@ -66,14 +65,17 @@ $(document).ready(function () {
         }
     });
 
-    /*$(document).getElementById("sendButton").addEventListener("click", (event) => {
-        var user = $(document).getElementById("userInput").val().trim();
-        var message = $(document).getElementById("messageInput").val().trim();
-        connection.invoke("SendMessage", user, message).catch((err) => {
-            return console.error(err.toString());
-        });
-        event.preventDefault();
-    });*/
+    // Toggle the recieve group messaages.
+    $messagecontent.keydown(function (e) {
+        if (e.key == "c" && e.ctrlKey)
+            toggleRecieveMessages();
+    });
 
 });
+
+// This function is used to toggle the recieving of private messages
+function toggleRecieveMessages() {
+    alert("Turning off group messages");
+    RecieveGroupMessages = !RecieveGroupMessages; 
+}
 

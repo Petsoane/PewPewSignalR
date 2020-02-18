@@ -47,7 +47,7 @@ namespace PewPewSignalR.Hubs
 			_userMessageContext.ChangeMessagesTo(username, newReciever);
 		}
 		// This should be renamed to something else.
-		public async Task TestSend(string username, string message)
+		public async Task Send(string username, string message)
 		{
 			_userMessageContext.AddMessages(username, message);
 			dynamic userContext = _userMessageContext.GetUserContext(username);
