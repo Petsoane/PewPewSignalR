@@ -31,8 +31,8 @@ body {
 #messagesList {
     background-color: white;
     position: relative;
-    height: 80vh;
-    max-height: 80vh;
+    height: 50vh;
+    max-height: 50vh;
     overflow-y: auto;
     border-radius: 3px;
 }

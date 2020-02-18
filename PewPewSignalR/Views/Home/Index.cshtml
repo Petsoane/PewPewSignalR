@@ -8,7 +8,8 @@
 <input id="Username" type="hidden" value="@ViewBag.Username" />
 <div class="">
     <div class="row">
-        <div class="col-lg-12">
+        <div class="col-lg-9">
+        <h5>Messages</h5>
             <ul id="messagesList" class="list-group">
 
                 @foreach (var item in UserMessageContext.GetMessages(ViewBag.Username))
@@ -17,12 +18,30 @@
                 }
 
             </ul>
-            <input class="form-control mt-3" id="messageInput" placeholder="Type message here..." />
+            <input class="form-control mt-3 btn-outline-light" id="messageInput" placeholder="Type message here..." />
         </div>
-    </div>
-    <h3>Send a direct message</h3>
-    <input class="form-control mt-3" id="sendDM" placeholder="Type message here..." />
 
+        <div class="col-lg-3">
+            <h5>Online Users</h5>
+            <ul id="onlineUsers">
+               @foreach (var item in UserMessageContext.GetAllUserNames())
+                {
+                    <li class="list-group-item">@item</li>
+                }
+
+            </ul>
+        </div>
+
+    </div>
+    <div class="container">
+    <h5 class="mt-3">Chat Instructions</h5>
+    <ul>
+        <li>By default all messages will be sent to a public group</li>
+        <li>"Ctrl + c" to silence group messages</li>
+        <li>"Ctrl + x" to silence all but current private channel</li>
+        <li>"<username>/" to start a new private channel</li>
+    </ul>
+    </div>
 </div>
 
 
