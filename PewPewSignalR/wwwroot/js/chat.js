@@ -27,6 +27,10 @@ $(document).ready(function () {
         $('#messagesList').scrollTop($('#messagesList').prop('scrollHeight'));
     });
 
+    connection.on("notifyDirect", () => {
+        alert("You have a new notification");
+    });
+
     connection.start().then(() => {
             connection.invoke("AddUser", user)
     });

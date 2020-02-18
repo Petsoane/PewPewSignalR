@@ -91,16 +91,29 @@ namespace PewPewSignalR.Hubs
 			await Clients.All.SendAsync("ReceiveMessage", user, message, timestamp);
 		}
 
-	
+
 		public async Task SendPrivate(string username, string message)
 		{
-			string reciever = _userMessageContext.GetReciverId(username);
+			dynamic recievercontext = _userMessageContext.GetRecieverContext(username);
 
-			if (reciever != null)
+			dynamic sendercontext = _userMessageContext.GetUserContext(username);
+
+			if (recievercontext != null)
 			{
-				Console.WriteLine("The reciever user id is " + reciever);
-				await Clients.Client(reciever).SendAsync("PrivateReciever", username, message);
+				Console.WriteLine("The reciever user id is " + recievercontext.ConnectioId);
+				await Clients.Client(recievercontext.ConnectionId).SendAsync("PrivateReciever", username, message);
+				await NotifyDirect(recievercontext, sendercontext);
+
 			}
+		}
+
+		public async Task NotifyDirect(dynamic receiver, dynamic sender)
+		{
+			if (receiver.MessagesTo != sender.MessagesTo)
+			{
+				await Clients.Client(receiver.ConnectionId).SendAsync("notifyDirect");
+			}
+
 		}
 	}
 }

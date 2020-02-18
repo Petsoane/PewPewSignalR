@@ -67,5 +67,13 @@ namespace PewPewSignalR.Models
 			}
 			return null;
 		}
+
+		public dynamic GetRecieverContext(string username)
+		{
+			if ((UsersOnline.ContainsKey(username) && UsersOnline[username].MessageTo != "group") &&
+				UsersOnline.ContainsKey(UsersOnline[username].MessageTo))
+				return UsersOnline[UsersOnline[username].MessageTo];
+			return null;
+		}
 	}
 }
