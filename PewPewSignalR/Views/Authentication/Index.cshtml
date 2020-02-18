@@ -5,11 +5,13 @@
 @model PewPewSignalR.Models.User
 
 <h1>Index</h1>
+<div class="form-group">
 
 <form method="post" asp-controller="Authentication" asp-action="Index">
-    <label asp-for="Username"></label>
-    <input asp-for="Username" />
-    <span asp-validation-for="Username"></span>
+    <label asp-for="Username" class=""></label>
+    <input asp-for="Username" class="form-control" />
+    <span asp-validation-for="Username" class=""></span>
     <br />
-    <input type="submit" value="Submit" />
+    <input type="submit" value="Submit" class="btn btn-primary"/>
 </form>
+</div>
